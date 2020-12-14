@@ -1,52 +1,66 @@
 function getSquares(nums) {
   if (nums === undefined) throw new Error("nums is required");
-  return nums.map(x=>x**2);
+  let result = []
+  nums.forEach(element => {
+    result.push(element * element)
+  });
+  return result
 }
 
 function camelCaseWords(words) {
   if (words === undefined) throw new Error("words is required");
-  var camword = "";
-  for (var i in words) {
-    if (i == 0) {
-      camword = camword + words[i];
+  let result = ""
+  for (let i = 0; i < words.length; i++) {
+    let firstChar = words[i].charAt(0);
+    let remaining = words[i].slice(1);
+    if (i === 0) {
+      result += words[i]
     } else {
-      camword = camword + words[i].charAt(0).toUpperCase() + words[i].slice(1);
+      result += firstChar.toUpperCase() + remaining
     }
+
   }
-  return camword;
+  return result
 }
 
 function getTotalSubjects(people) {
   if (people === undefined) throw new Error("people is required");
-  var totalSub = 0;
-  for (var i = 0; i < people.length; i++) {
-    totalSub = totalSub + people[i].subjects.length;
-  }
-  return totalSub;
+  let result = 0;
+  people.forEach(element => {
+    if (element.subjects.length > 0) {
+      result += element.subjects.length
+    }
+
+  });
+  return result
 }
 
 function checkIngredients(menu, ingredient) {
   if (menu === undefined) throw new Error("menu is required");
   if (!ingredient) throw new Error("ingredient is required");
-  for (var i = 0; i < menu.length; i++) {
-    for (var j = 0; j < menu[i].ingredients.length; j++) {
-      if (menu[i].ingredients[j] == ingredient) {
-        return true;
-      }
+  let result;
+  menu.forEach(element => {
+    if (result !== true) {
+      result = element.ingredients.includes(ingredient)
     }
-  }
-  return false;
+  });
+  return result
 }
 
 function duplicateNumbers(arr1, arr2) {
   if (arr1 === undefined) throw new Error("arr1 is required");
   if (arr2 === undefined) throw new Error("arr2 is required");
-  let common = arr1.filter(x => arr2.includes(x));
-  list = common.filter(function (x, i, a) { 
-    return a.indexOf(x) === i; 
-  });
-  return list.sort();
+  let result = [];
+  arr1.forEach(element => {
+    if (arr2.includes(element) && !result.includes(element)) {
+      result.push(element)
+    }
+  })
+  result.sort(function (a, b) { return a - b })
+  return result
 }
+
+
 module.exports = {
   getSquares,
   camelCaseWords,

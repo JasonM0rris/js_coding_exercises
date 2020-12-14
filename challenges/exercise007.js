@@ -4,14 +4,13 @@
  */
 const sumDigits = n => {
   if (n === undefined) throw new Error("n is required");
-  var str = n.toString();
-  var sum = 0;
-
-  for (var i = 0; i < str.length; i++) {
-    sum += parseInt(str.charAt(i), 10);
-  }
-
-  return sum;
+  const intStr = n.toString();
+  const strArr = intStr.split("");
+  let result = 0;
+  strArr.forEach(element => {
+    result += parseInt(element);
+  });
+  return result;
 };
 
 /**
@@ -22,20 +21,14 @@ const sumDigits = n => {
  * @param {Number} end
  * @param {Number} step
  */
-const createRange = (start, end, step) => {
+const createRange = (start, end, step = 1) => {
   if (start === undefined) throw new Error("start is required");
   if (end === undefined) throw new Error("end is required");
-  var range = [];
-  if(step == null){
-    step = 1;
+  let result = [];
+  for (let i = start; i <= end; i += step) {
+    result.push(i)
   }
-
-  for (let i = start; i <= end; i = i + step) {
-    range.push(start);
-    start += step;
-  }
-
-  return range;
+  return result;
 };
 
 /**
@@ -70,26 +63,22 @@ const createRange = (start, end, step) => {
 const getScreentimeAlertList = (users, date) => {
   if (users === undefined) throw new Error("users is required");
   if (date === undefined) throw new Error("date is required");
-  
-  var numUsers = [];
-
-  users.forEach((user) => {
-    user.screenTime.forEach((screenDay) => {
-      if (screenDay.date == date) {
-        var mins = 0;
-
-        for (var prop in screenDay.usage) {
-          mins = mins + screenDay.usage[prop];
-        }
-
-        if (mins > 100) {
-          numUsers.push(user.username);
-        }
+  let result = []
+  users.forEach(user => {
+    let sum = 0;
+    user.screenTime.forEach(day => {
+      if (day.date === date) {
+        let dayValues = Object.values(day.usage);
+        dayValues.forEach(value => {
+          sum += value;
+        })
       }
-    });
-  });
-
-  return numUsers;
+    })
+    if (sum >= 100) {
+      result.push(user.username)
+    }
+  })
+  return result;
 };
 
 /**
@@ -104,12 +93,11 @@ const getScreentimeAlertList = (users, date) => {
  */
 const hexToRGB = hexStr => {
   if (hexStr === undefined) throw new Error("hexStr is required");
-  const red = parseInt(hexStr.substring(1, 3), 16).toString(10);
-  const green = parseInt(hexStr.substring(3, 5), 16).toString(10);
-  const blue = parseInt(hexStr.substring(5, 7), 16).toString(10);
+  let red = parseInt(hexStr.slice(1, 3), 16),
+    green = parseInt(hexStr.slice(3, 5), 16),
+    blue = parseInt(hexStr.slice(5, 7), 16);
 
-  return `rgb(${red},${green},${blue})`;
-  
+  return `rgb(${red}, ${green}, ${blue})`;
 };
 
 /**
@@ -124,38 +112,28 @@ const hexToRGB = hexStr => {
  */
 const findWinner = board => {
   if (board === undefined) throw new Error("board is required");
-  for (var i = 0; i < 3; i++) {
-    if (board[i][0] === "X" && board[i][1] === "X" && board[i][2] === "X") {
-      return "X";
+  let result = null;
+  const matches = [
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9],
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+    [1, 5, 9],
+    [3, 5, 7]
+  ];
+  let boardMap = {};
+  board.flat().forEach((element, index) => {
+    boardMap[index + 1] = element
+  });
+  matches.forEach(set => {
+    let first = boardMap[set[0]]
+    if (boardMap[set[1]] === first && boardMap[set[2]] === first) {
+      result = first
     }
-    if (board[i][0] === "0" && board[i][1] === "0" && board[i][2] === "0") {
-      return "0";
-    }
-  }
-
-  for (var j = 0; j < 3; j++) {
-    if (board[0][j] === "X" && board[1][j] === "X" && board[2][j] === "X") {
-      return "X";
-    }
-    if (board[0][j] === "0" && board[1][j] === "0" && board[2][j] === "0") {
-      return "0";
-    }
-  }
-
-  if (board[0][0] === "X" && board[1][1] === "X" && board[2][2] === "X") {
-    return "X";
-  }
-  if (board[0][0] === "0" && board[1][1] === "0" && board[2][2] === "0") {
-    return "0";
-  }
-  if (board[0][2] === "X" && board[1][1] === "X" && board[2][0] === "X") {
-    return "X";
-  }
-  if (board[0][1] === "0" && board[1][1] === "0" && board[2][0] === "0") {
-    return "0";
-  }
-
-  return null;
+  });
+  return result;
 };
 
 module.exports = {

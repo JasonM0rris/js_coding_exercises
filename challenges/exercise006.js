@@ -6,7 +6,7 @@
  */
 const sumMultiples = arr => {
   if (arr === undefined) throw new Error("arr is required");
-  var sum=0;
+  var sum = 0;
   arr.forEach((x) => {
     if (x % 3 == 0 || x % 5 == 0) {
       sum = sum + x;
@@ -121,20 +121,17 @@ const createMatrix = (n, fill) => {
 const areWeCovered = (staff, day) => {
   if (staff === undefined) throw new Error("staff is required");
   if (day === undefined) throw new Error("day is required");
-  
-  var count = 0;
-  for (var i = 0; i < staff.length; i++) {
-    for (var j = 0; j < staff[i].rota.length; j++) {
-      if (day == staff[i].rota[j]) {
-        count++;
+  let result = 0;
+  staff.forEach(staffMember => {
+    let rota = staffMember.rota;
+    rota.forEach(dayOfRota => {
+      if (day === dayOfRota) {
+        result += 1;
       }
-    }
-  }
-  if (count >= 3) {
-    return true;
-  } else {
-    return false;
-  }
+    });
+
+  });
+  return result >= 3;
 };
 
 module.exports = {
