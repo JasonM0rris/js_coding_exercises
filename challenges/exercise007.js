@@ -97,7 +97,7 @@ const hexToRGB = hexStr => {
     green = parseInt(hexStr.slice(3, 5), 16),
     blue = parseInt(hexStr.slice(5, 7), 16);
 
-  return `rgb(${red}, ${green}, ${blue})`;
+  return `rgb(${red},${green},${blue})`;
 };
 
 /**
